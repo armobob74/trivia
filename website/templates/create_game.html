@@ -4,5 +4,12 @@
 <button type="submit">Create Game</button>
 </form>
 
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
+<script>
+	var socket = io.connect('/'); //needs to come before cookieFunctions
+</script>
 <script src="/static/javascript/cookieFunctions.js"></script>
 <script src="/static/javascript/userCookie.js"></script>
+<script>
+	document.getElementById("username").value = username;
+</script>
