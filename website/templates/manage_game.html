@@ -1,11 +1,15 @@
 <button onclick="refreshRoom('managing {{game_id}}')">Next Question</button>
 <h3><span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h3>
-<ul id="player_list">
+<table id="player_table">
 	{% for username, answer_tf in users %}
-
-	<li><span>{{username}}</span><span id="{{username}}-answer-tf">{% if answer_tf %}submitted{%else%}...{%endif%}</span></li>
+	<tr>
+		<td class="player-name">{{username}}</td>
+		<td id="{{username}}-answer-tf" class="answer-tf">
+			{% if answer_tf %}submitted{%else%}...{%endif%}
+		</td>
+	</tr>
 	{%endfor%}
-</ul>
+</table>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
 <script>
@@ -16,14 +20,14 @@
 <script src="/static/javascript/userCookie.js"></script>
 <script>
 
-    function player_li_innerHTML(playername,answer_tf){
+    function player_tr_innerHTML(playername,answer_tf){
 	    submit_status = '...'
 	    if(answer_tf){submit_status = 'submitted'}
-	    return `<li><span>${playername}</span><span id="${playername}-answer-tf">${submit_status}</span></li>`
+	    return `<tr><td class='player-name'>${playername}</td><td id="${playername}-answer-tf" class='answer-tf'>${submit_status}</td></tr>`
     }
     let answers_submitted = document.getElementById('answers_submitted')
     let num_players_span = document.getElementById('num_players')
-    let player_list = document.getElementById('player_list')
+    let player_table = document.getElementById('player_table')
     let num_players = Number(num_players_span.innerText)
     let n_ans_submitted = Number(answers_submitted.innerText)
     
@@ -42,6 +46,11 @@
 	console.log('Sent refresh_order')
 	n_ans_submitted = 0    
 	answers_submitted.innerText = 0
+	
+	answer_tfs = document.getElementsByClassName('answer-tf')
+	    for(answer_tf_item of answer_tfs){
+		answer_tf_item.innerHTML="..."
+	    }
     }
 
     socket.on('update_manager_response', function(msg){
@@ -55,7 +64,7 @@
     function addPlayer(player_data){
 	    num_players += 1
 	    num_players_span.innerText = String(num_players)
-	    player_list.innerHTML = player_li_innerHTML(player_data['username'],false)
+	    player_table.innerHTML = player_tr_innerHTML(player_data['username'],false)
     }
 
     socket.on('player_created_notification', function(msg){
@@ -66,5 +75,4 @@
 	    console.log('Recieved player_created_notification')
 	    addPlayer(msg)
     });
-
 </script>
