@@ -71,7 +71,7 @@ def createGame():
         return redirect(f'/manage-game/{new_game.id}')
     return render_template('create_game.html')
 
-@views.route('/manage-game/<string:game_id>', methods=['GET','POST'])
+@views.route('/manage-game/<string:game_id>', methods=['GET'])
 def manageGame(game_id):
     """
     Get the game from the database
@@ -82,6 +82,7 @@ def manageGame(game_id):
     players = game.players
     d = {
         'num_players':len(players),
+        'usernames':[player.username for player in players],
         'answers_submitted':len([p for p in players if p.submitted_answer]),
     }
     return render_template('manage_game.html', game_id=game_id,**d)

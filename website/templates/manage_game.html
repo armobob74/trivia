@@ -1,6 +1,10 @@
 <button onclick="refreshRoom('managing {{game_id}}')">Next Question</button>
 <h3><span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h3>
-<ul id="player_list"></ul>
+<ul id="player_list">
+	{% for username in usernames %}
+	<li>{{username}}</li>
+	{%endfor%}
+</ul>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
 
