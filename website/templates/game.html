@@ -1,7 +1,7 @@
 <p>{{ question['text'] }}</p>
 
 <script src="/static/javascript/cookieFunctions.js"></script>
-<form action="/submit-answer" method="POST">
+<form action="/submit-answer" method="POST" onsubmit="updateManager()">
 	<input type="hidden" name="username" id="username" value=""/>
 	<input type="hidden" name="game_id" id="game_id" value="{{game_id}}"/>
 	<input type="hidden" name="question_id" id="question_id" value="{{question['id']}}"/>
@@ -9,7 +9,7 @@
 	<input type="radio" name="answer" id="B" value="B">{{question['B']}}</input>
 	<input type="radio" name="answer" id="C" value="C">{{question['C']}}</input>
 	<input type="radio" name="answer" id="D" value="D">{{question['D']}}</input>
-	<button type="submit" onclick=updateManager()>Submit</button>
+	<button type="submit" >Submit</button>
 </form>
 
 <script src="/static/javascript/userCookie.js"></script>
