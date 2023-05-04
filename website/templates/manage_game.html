@@ -1,6 +1,7 @@
 <button onclick="refreshRoom('managing {{game_id}}')">Next Question</button>
 <h3><span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h3>
 <table id="player_table">
+	<tbody>
 	{% for username, answer_tf, total_correct in users %}
 	<tr id="row-{{username}}">
 		<td class="player-name">{{username}}</td>
@@ -10,6 +11,7 @@
 		<td class="total-correct">{{total_correct}}</td>
 	</tr>
 	{%endfor%}
+</tbody>
 </table>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
@@ -24,11 +26,16 @@
     function player_tr_outerHTML(playername,answer_tf,total_correct){
 	    submit_status = '...'
 	    if(answer_tf){submit_status = 'submitted'}
-	    return `<tr id="row-${playername}"><td class='player-name'>${playername}</td><td class='answer-tf'>${submit_status}</td><td class="total_correct">${total_correct}</td></tr>`
+	    return `<tr id="row-${playername}">
+		    <td class='player-name'>${playername}</td>
+		    <td class='answer-tf'>${submit_status}</td>
+		    <td class="total-correct">${total_correct}</td>
+		    </tr>`
     }
     let answers_submitted = document.getElementById('answers_submitted')
     let num_players_span = document.getElementById('num_players')
     let player_table = document.getElementById('player_table')
+    let player_table_body = player_table.getElementsByTagName('tbody')[0]
     let num_players = Number(num_players_span.innerText)
     let n_ans_submitted = Number(answers_submitted.innerText)
     
@@ -61,7 +68,6 @@
 	    player_row = document.getElementById(`row-${msg['username']}`)
 	    answer_tf = player_row.getElementsByClassName('answer-tf')[0]
 	    answer_tf.innerText = 'submitted'
-
 	    total_correct_item = player_row.getElementsByClassName('total-correct')[0]
 	    total_correct = Number(total_correct_item.innerText)
 	    if(msg['correct_tf']){
@@ -73,7 +79,7 @@
     function addPlayer(player_data){
 	    num_players += 1
 	    num_players_span.innerText = String(num_players)
-	    player_table.innerHTML += player_tr_outerHTML(player_data['username'],false,0)
+	    player_table_body.innerHTML += player_tr_outerHTML(player_data['username'],false,0)
     }
 
     socket.on('player_created_notification', function(msg){
