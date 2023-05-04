@@ -87,6 +87,12 @@ def checkAnswerSubmitted(data):
 # [TODO] add something on the front end (manage_game.html) to handle this message
 @socketio.on('update_manager_request')
 def updateManager(data):
+    """
+    update the manager when a player submits an answer
+    """
+    print("\n"*3)
+    print("Recieved update_manager_request from", data['username'])
+    print("\n"*3)
     username = data['username']
     game_id = data['game_id']
     question_id = data['question_id']
@@ -102,6 +108,27 @@ def updateManager(data):
     socketio.emit('update_manager_response', msg, room=room)
 
 
+@socketio.on('create_player_request')
+def createPlayer(msg):
+    """
+    creates a non-manager player
+    lets the relevant management console know that a player has been created.
+    msg = {
+        'username':str,
+        'game_id':str
+    }
+    """
+    player = Player(
+            game=msg['game_id'],
+            manager=False,
+            username=msg['username'],
+            )
+    db.session.add(player)
+    db.session.commit()
+    room = f'managing {msg["game_id"]}'
+    socketio.emit('player_created_notification', msg, room=room)
+
+
 @socketio.on('submit_answer_request')
 def submitAnswer(msg):
     print("submitting answer")
@@ -114,14 +141,11 @@ def submitAnswer(msg):
     isCorrect = current_question.correct == answer_letter
     player = Player.query.filter_by(username=username).first()
 
-    if player is None: #this is the case if player just submitted a new username
-        player = Player(
-                game=game_id,
-                manager=False,
-                username=username,
-                )
-        db.session.add(player)
-        db.session.commit()
+    if player is None: # should be impossible, but just in case.
+        createPlayer(msg={
+            'game_id':game_id,
+            'username':username,
+            })
     elif player.game != game_id: # this is the case if player was playing a different game
         player.manager=False
         player.game = game_id
@@ -138,7 +162,7 @@ def submitAnswer(msg):
     db.session.add(answer)
     db.session.commit()
 
-    socketio.emit('submit_answer_response',msg={},room=game_id)
+    #socketio.emit('submit_answer_response','Answer submitted',room=game_id)
 
 
 if __name__ == '__main__':

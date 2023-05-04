@@ -28,6 +28,10 @@ function checkCookie() {
     user = prompt("Please create a username:", "");
     if (user != "" && user != null) {
       setCookie("username", user, 1);
+      socket.emit('create_player_request',{
+		'username':user,
+	        'game_id':7 //[TODO] CHANGE THIS
+      })
     }
   }
 }
