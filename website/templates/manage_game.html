@@ -7,6 +7,7 @@
 <script>
     var socket = io.connect('/');
     var answers_submitted = document.getElementById('answers_submitted')
+    let n_ans_submitted = Number(answers_submitted.innerText)
     
     socket.on('connect', function() {
         console.log('Connected to server');
@@ -21,10 +22,12 @@
     function refreshRoom(room){
 	socket.emit('refresh_order',{'room':room})	
 	console.log('Sent refresh_order')
+	n_ans_submitted = 0    
+	answers_submitted.innerText = 0
     }
 
-    socket.on('update_manager', function(msg){
-	    n = Number(answers_submitted.innerText)
-	    answers_submitted.innerText = String(n + 1)
+    socket.on('update_manager_response', function(msg){
+	    answers_submitted.innerText = String(n_ans_submitted + 1)
+	    console.log('Recieved update from',msg['username'])
     });
 </script>

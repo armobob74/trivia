@@ -41,9 +41,10 @@
 	    msg = {
 		    'username':username,
 		    'game_id':{{game_id}},
-		    'username':{{question['id']}}
+		    'question_id':{{question['id']}}
 	    }
-	    socket.emit('update_manager',msg)
+	    socket.emit('update_manager_request',msg)
+	    console.log('Sent update_manager_request',msg)
     }
 
     // disable the form so that user may no longer submit questions 

@@ -85,13 +85,12 @@ def checkAnswerSubmitted(data):
 
 # [TODO] add a submitted_question field to Player if possible, in order to prevent count from resetting with each page refresh.
 # [TODO] add something on the front end (manage_game.html) to handle this message
-@socketio.on('update_manager')
+@socketio.on('update_manager_request')
 def updateManager(data):
     username = data['username']
     game_id = data['game_id']
     question_id = data['question_id']
     player = Player.query.filter_by(username=username).first()
-    pdb.set_trace() 
     player.submitted_answer = True
     db.session.commit()
     room = f'managing {game_id}'
@@ -100,7 +99,7 @@ def updateManager(data):
             'game_id':game_id,
             'question_id':question_id
     }
-    socketio.emit('update_manager', msg, room=room)
+    socketio.emit('update_manager_response', msg, room=room)
 
 
 
