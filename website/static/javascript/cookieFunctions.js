@@ -37,6 +37,7 @@ function checkCookie() {
 
 socket.on('create_player_response', function(msg) {
 	// wait for response before setting username cookie in order to avoid creating duplicate usernames.
-      setCookie("username", msg['username'], 1);
+	setCookie("username", msg['username'], 1);
 	console.log("Recieved create_player_response",msg);
+	username = getCookie("username")
 });
