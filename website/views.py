@@ -58,7 +58,7 @@ def manageGame(game_id):
     players = game.players
     d = {
         'num_players':len(players),
-        'usernames':[player.username for player in players],
+        'users':[(player.username, player.submitted_answer) for player in players],
         'answers_submitted':len([p for p in players if p.submitted_answer]),
     }
     return render_template('manage_game.html', game_id=game_id,**d)

@@ -1,8 +1,9 @@
 <button onclick="refreshRoom('managing {{game_id}}')">Next Question</button>
 <h3><span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h3>
 <ul id="player_list">
-	{% for username in usernames %}
-	<li>{{username}}</li>
+	{% for username, answer_tf in users %}
+
+	<li><span>{{username}}</span><span id="{{username}}-answer-tf">{% if answer_tf %}submitted{%else%}...{%endif%}</span></li>
 	{%endfor%}
 </ul>
 
@@ -14,6 +15,12 @@
 <script src="/static/javascript/cookieFunctions.js"></script>
 <script src="/static/javascript/userCookie.js"></script>
 <script>
+
+    function player_li_innerHTML(playername,answer_tf){
+	    submit_status = '...'
+	    if(answer_tf){submit_status = 'submitted'}
+	    return `<li><span>${playername}</span><span id="${playername}-answer-tf">${submit_status}</span></li>`
+    }
     let answers_submitted = document.getElementById('answers_submitted')
     let num_players_span = document.getElementById('num_players')
     let player_list = document.getElementById('player_list')
@@ -41,12 +48,14 @@
 	    n_ans_submitted = n_ans_submitted + 1
 	    answers_submitted.innerText = String(n_ans_submitted)
 	    console.log('Recieved update from',msg['username'])
+	    answer_tf = document.getElementById(`${msg['username']}-answer-tf`)
+	    answer_tf.innerText = 'submitted'
     });
 
     function addPlayer(player_data){
 	    num_players += 1
 	    num_players_span.innerText = String(num_players)
-	    player_list.innerHTML += `<li>${player_data['username']}</li>`
+	    player_list.innerHTML = player_li_innerHTML(player_data['username'],false)
     }
 
     socket.on('player_created_notification', function(msg){
