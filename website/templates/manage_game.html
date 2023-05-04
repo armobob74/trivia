@@ -1,12 +1,13 @@
 <button onclick="refreshRoom('managing {{game_id}}')">Next Question</button>
 <h3><span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h3>
 <table id="player_table">
-	{% for username, answer_tf in users %}
-	<tr>
+	{% for username, answer_tf, total_correct in users %}
+	<tr id="row-{{username}}">
 		<td class="player-name">{{username}}</td>
-		<td id="{{username}}-answer-tf" class="answer-tf">
+		<td class="answer-tf">
 			{% if answer_tf %}submitted{%else%}...{%endif%}
 		</td>
+		<td class="total-correct">{{total_correct}}</td>
 	</tr>
 	{%endfor%}
 </table>
@@ -20,10 +21,10 @@
 <script src="/static/javascript/userCookie.js"></script>
 <script>
 
-    function player_tr_innerHTML(playername,answer_tf){
+    function player_tr_outerHTML(playername,answer_tf,total_correct){
 	    submit_status = '...'
 	    if(answer_tf){submit_status = 'submitted'}
-	    return `<tr><td class='player-name'>${playername}</td><td id="${playername}-answer-tf" class='answer-tf'>${submit_status}</td></tr>`
+	    return `<tr id="row-${playername}"><td class='player-name'>${playername}</td><td class='answer-tf'>${submit_status}</td><td class="total_correct">${total_correct}</td></tr>`
     }
     let answers_submitted = document.getElementById('answers_submitted')
     let num_players_span = document.getElementById('num_players')
@@ -56,15 +57,23 @@
     socket.on('update_manager_response', function(msg){
 	    n_ans_submitted = n_ans_submitted + 1
 	    answers_submitted.innerText = String(n_ans_submitted)
-	    console.log('Recieved update from',msg['username'])
-	    answer_tf = document.getElementById(`${msg['username']}-answer-tf`)
+	    console.log('Recieved update',msg)
+	    player_row = document.getElementById(`row-${msg['username']}`)
+	    answer_tf = player_row.getElementsByClassName('answer-tf')[0]
 	    answer_tf.innerText = 'submitted'
+
+	    total_correct_item = player_row.getElementsByClassName('total-correct')[0]
+	    total_correct = Number(total_correct_item.innerText)
+	    if(msg['correct_tf']){
+	    	total_correct = total_correct + 1
+	    }
+	    total_correct_item.innerText = total_correct
     });
 
     function addPlayer(player_data){
 	    num_players += 1
 	    num_players_span.innerText = String(num_players)
-	    player_table.innerHTML = player_tr_innerHTML(player_data['username'],false)
+	    player_table.innerHTML += player_tr_outerHTML(player_data['username'],false,0)
     }
 
     socket.on('player_created_notification', function(msg){

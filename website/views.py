@@ -56,9 +56,11 @@ def manageGame(game_id):
     #[TODO] implement a nice management interface thingy.
     game = Game.query.get_or_404(game_id)
     players = game.players
+    for player in players:
+        player.total_correct = sum([answer.correct for answer in player.answers])
     d = {
         'num_players':len(players),
-        'users':[(player.username, player.submitted_answer) for player in players],
+        'users':[(player.username, player.submitted_answer,player.total_correct) for player in players],
         'answers_submitted':len([p for p in players if p.submitted_answer]),
     }
     return render_template('manage_game.html', game_id=game_id,**d)
@@ -75,7 +77,7 @@ def populateDb():
             B = '123',
             C = 'abc',
             D = '123',
-            correct = random.choice('ABCD')
+            correct = 'C'
             )
         db.session.add(newQuestion)
     db.session.commit()

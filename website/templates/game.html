@@ -39,10 +39,17 @@
     socket.emit('check_answer_submitted',{'username':username,'game_id':game_id,'question_id':{{question['id']}}})
 
     function updateManager(){
+	    inputs = question_form.getElementsByTagName('input')
+	    for(input of inputs){
+		if(input.name == 'answer' && input.checked){
+			answer_letter = input.value
+		}
+	    }
 	    msg = {
 		    'username':username,
 		    'game_id':{{game_id}},
-		    'question_id':{{question['id']}}
+		    'question_id':{{question['id']}},
+		    'answer_letter':answer_letter	
 	    }
 	    socket.emit('update_manager_request',msg)
 	    console.log('Sent update_manager_request',msg)

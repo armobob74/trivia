@@ -97,6 +97,11 @@ def updateManager(data):
     username = data['username']
     game_id = data['game_id']
     question_id = data['question_id']
+
+    current_question = Question.query.get_or_404(question_id)
+    answer_letter = data['answer_letter']
+    correct_tf = answer_letter == current_question.correct
+
     player = Player.query.filter_by(username=username).first()
     player.submitted_answer = True
     db.session.commit()
@@ -104,7 +109,8 @@ def updateManager(data):
     msg = {
             'username':username,
             'game_id':game_id,
-            'question_id':question_id
+            'question_id':question_id,
+            'correct_tf':correct_tf
     }
     socketio.emit('update_manager_response', msg, room=room)
 
@@ -192,7 +198,7 @@ def submitAnswer(msg):
 @socketio.on('create_game_request')
 def create_game(msg):
         all_games = Game.query.all()
-        if all_games is None:
+        if len(all_games) == 0:
             max_id = 0
         else:
             max_id = max([x.id for x in all_games])
