@@ -3,7 +3,7 @@ from website.models import *
 import pdb
 import re
 import random
-from .string_utils import randstr
+from .string_utils import randstr, uniquify
 
 views = Blueprint('views', __name__)
 
@@ -44,31 +44,6 @@ def createGame():
     display the game's current question
     """
     if request.method == 'POST':
-        all_games = Game.query.all()
-        if all_games is None:
-            max_id = 0
-        else:
-            max_id = max([x.id for x in all_games])
-        new_game_id = max_id + 1
-        new_game = Game(
-                id=new_game_id,
-                total_questions=int(request.form['total_questions']),
-                current_question=1,
-                )
-
-        username = request.form['username']
-        # set the creator as manager
-        # [TODO] Deal with potential problems arising from duplicate usernames
-        creator = Player.query.filter_by(username=username).first()
-        if creator is None:
-            creator = Player(
-                    username=username
-                    )
-        creator.manager = True
-        creator.game = new_game.id
-        db.session.add(creator)
-        db.session.add(new_game)
-        db.session.commit()
         return redirect(f'/manage-game/{new_game.id}')
     return render_template('create_game.html')
 

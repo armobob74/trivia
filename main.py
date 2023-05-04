@@ -189,6 +189,44 @@ def submitAnswer(msg):
 
     #socketio.emit('submit_answer_response','Answer submitted',room=game_id)
 
+@socketio.on('create_game_request')
+def create_game(msg):
+        all_games = Game.query.all()
+        if all_games is None:
+            max_id = 0
+        else:
+            max_id = max([x.id for x in all_games])
+        new_game_id = max_id + 1
+        new_game = Game(
+                id=new_game_id,
+                total_questions=int(msg['total_questions']),
+                current_question=1,
+                )
+
+        username = msg['username']
+        # set the creator as manager
+        creator = Player.query.filter_by(username=username).first()
+        if creator is None:
+            unique_username = username
+        else:
+            usernames = [p.username for p in Player.query.all()]
+            unique_username = uniquify(username,usernames)
+        creator = Player(
+                username=unique_username
+                )
+        creator.manager = True
+        creator.game = new_game.id
+        db.session.add(creator)
+        db.session.add(new_game)
+        db.session.commit()
+        msg['username'] = unique_username
+        response_message = {
+                    'username':unique_username,
+                    'game_id':new_game_id
+                }
+        socketio.emit('create_game_response', response_message, room=request.sid)
+
+
 
 if __name__ == '__main__':
     socketio.run(app,debug=True)

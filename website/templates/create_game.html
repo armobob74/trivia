@@ -1,7 +1,7 @@
 <form action="/create-game" method="POST">
-<input type="hidden" name="username" id="username" value=""/>
-<input type="number" name="total_questions"></input>
-<button type="submit">Create Game</button>
+<input type="string" name="username" id="username" value=""/>
+<input type="number" name="total_questions"/>
+<button type="button" onclick="createGame()" >Submit</button>
 </form>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
@@ -12,4 +12,20 @@
 <script src="/static/javascript/userCookie.js"></script>
 <script>
 	document.getElementById("username").value = username;
+	form = document.getElementsByTagName('form')[0];
+
+	function createGame() {
+		formData = new FormData(form);
+		msg = {}
+		formData.forEach((value, key) => msg[key] = value)
+		console.log('create_game_request',msg)
+    		socket.emit('create_game_request', msg)
+	}
+
+	socket.on('create_game_response', function(msg){
+		console.log("User",msg['username'],"created game",msg['game_id'])
+		setCookie("username",msg['username'],1)
+		window.location = `/manage-game/${msg['game_id']}`
+	});
+
 </script>

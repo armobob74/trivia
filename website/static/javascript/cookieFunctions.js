@@ -29,7 +29,7 @@ function checkCookie() {
     if (user != "" && user != null) {
       socket.emit('create_player_request',{
 		'username':user,
-	        'game_id':game_id //[TODO] CHANGE THIS
+	        'game_id':game_id
       })
     }
   }
