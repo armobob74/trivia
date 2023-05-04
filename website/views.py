@@ -36,43 +36,6 @@ def game(game_id):
     return render_template('game.html',question=d,game_id=game_id)
 
 
-# could maybe be done better as a socketio event
-@views.route('/submit-answer', methods=['POST'])
-def submitAnswer():
-    username = request.form['username']
-    game_id = request.form['game_id']
-    question_id = request.form['question_id']
-    answer_letter = request.form['answer']
-    current_question = Question.query.get(question_id)
-    isCorrect = current_question.correct == answer_letter
-    player = Player.query.filter_by(username=username).first()
-
-    if player is None: #this is the case if player just submitted a new username
-        player = Player(
-                game=game_id,
-                manager=False,
-                username=username,
-                )
-        db.session.add(player)
-        db.session.commit()
-    elif player.game != game_id: # this is the case if player was playing a different game
-        player.manager=False
-        player.game = game_id
-        db.session.add(player)
-        db.session.commit()
-
-    answer = Answer(
-            question=question_id,
-            game=game_id,
-            player=player.id,
-            answer_letter=answer_letter,
-            correct=isCorrect
-            )
-    db.session.add(answer)
-    db.session.commit()
-
-    return redirect(f'/game/{game_id}')
-
 
 @views.route('/create-game', methods=['GET','POST'])
 def createGame():

@@ -1,4 +1,4 @@
-from website import create_app, db, Game, CompletedQuestion, Question, Player
+from website import create_app, db, Game, CompletedQuestion, Question, Player, Answer
 import pdb
 import random
 from flask_socketio import SocketIO, join_room
@@ -62,7 +62,7 @@ def refresh_order(data):
         socketio.emit('refresh_order','REFRESH',room=room_to_refresh)
 
 
-#doing this with socketio instead of a route because I don't want form to be re-eneabled by a simple url-change or refresh.
+#doing this because I don't want form to be re-eneabled by a simple url-change or refresh.
 @socketio.on('check_answer_submitted')
 def checkAnswerSubmitted(data):
     username = data['username']
@@ -101,6 +101,44 @@ def updateManager(data):
     }
     socketio.emit('update_manager_response', msg, room=room)
 
+
+@socketio.on('submit_answer_request')
+def submitAnswer(msg):
+    print("submitting answer")
+    username = msg['username']
+    game_id = msg['game_id']
+    question_id = msg['question_id']
+    answer_letter = msg['answer_letter']
+
+    current_question = Question.query.get(question_id)
+    isCorrect = current_question.correct == answer_letter
+    player = Player.query.filter_by(username=username).first()
+
+    if player is None: #this is the case if player just submitted a new username
+        player = Player(
+                game=game_id,
+                manager=False,
+                username=username,
+                )
+        db.session.add(player)
+        db.session.commit()
+    elif player.game != game_id: # this is the case if player was playing a different game
+        player.manager=False
+        player.game = game_id
+        db.session.add(player)
+        db.session.commit()
+
+    answer = Answer(
+            question=question_id,
+            game=game_id,
+            player=player.id,
+            answer_letter=answer_letter,
+            correct=isCorrect
+            )
+    db.session.add(answer)
+    db.session.commit()
+
+    socketio.emit('submit_answer_response',msg={},room=game_id)
 
 
 if __name__ == '__main__':
