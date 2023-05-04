@@ -2,6 +2,9 @@ from website import create_app, db, Game, CompletedQuestion, Question, Player, A
 import pdb
 import random
 from flask_socketio import SocketIO, join_room
+from sqlalchemy.exc import IntegrityError
+from website.string_utils import uniquify
+from flask import request
 
 def create_all():
     """ Create all db tables. Meant to be called from command line."""
@@ -83,8 +86,6 @@ def checkAnswerSubmitted(data):
 
     socketio.emit('check_answer_submitted_response',{'bool':answer_submitted,'answer':answer})
 
-# [TODO] add a submitted_question field to Player if possible, in order to prevent count from resetting with each page refresh.
-# [TODO] add something on the front end (manage_game.html) to handle this message
 @socketio.on('update_manager_request')
 def updateManager(data):
     """
@@ -118,14 +119,38 @@ def createPlayer(msg):
         'game_id':str
     }
     """
+    # make sure username is unique.
+    # add a special code after the username, like (2).
+
     player = Player(
             game=msg['game_id'],
             manager=False,
             username=msg['username'],
             )
-    db.session.add(player)
-    db.session.commit()
+    try:
+        db.session.add(player)
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        usernames = [p.username for p in Player.query.all()]
+        username = uniquify(msg['username'],usernames) 
+        msg['username'] = username
+        player = Player(
+                game=msg['game_id'],
+                manager=False,
+                username=username,
+                )
+        db.session.add(player)
+        db.session.commit()
+
     room = f'managing {msg["game_id"]}'
+
+    # notifies client that username was created. Necessary in case there is a 
+    # conflict and the username cookie needs to be different than the one originally
+    # requested.
+    socketio.emit('create_player_response', {'username':msg['username']}, room=request.sid)
+
+    # notifies the manager console.
     socketio.emit('player_created_notification', msg, room=room)
 
 

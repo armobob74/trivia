@@ -27,11 +27,16 @@ function checkCookie() {
   } else {
     user = prompt("Please create a username:", "");
     if (user != "" && user != null) {
-      setCookie("username", user, 1);
       socket.emit('create_player_request',{
 		'username':user,
-	        'game_id':7 //[TODO] CHANGE THIS
+	        'game_id':game_id //[TODO] CHANGE THIS
       })
     }
   }
 }
+
+socket.on('create_player_response', function(msg) {
+	// wait for response before setting username cookie in order to avoid creating duplicate usernames.
+      setCookie("username", msg['username'], 1);
+	console.log("Recieved create_player_response",msg);
+});

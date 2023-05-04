@@ -58,6 +58,7 @@ def createGame():
 
         username = request.form['username']
         # set the creator as manager
+        # [TODO] Deal with potential problems arising from duplicate usernames, or just re-do everything so duplicates are okay.
         creator = Player.query.filter_by(username=username).first()
         if creator is None:
             creator = Player(
@@ -92,7 +93,7 @@ def populateDb():
     """
     populate the database when it gets destroyed
     """
-    for _ in range(10):
+    for _ in range(50):
         newQuestion = Question(
             text = randstr(16),
             A = '123',

@@ -11,7 +11,8 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
 <script>
-    var socket = io.connect('/'); //needs to come before cookieFunctions
+	var game_id = {{game_id}}
+	var socket = io.connect('/'); //needs to come before cookieFunctions
 </script>
 <script src="/static/javascript/cookieFunctions.js"></script>
 <script src="/static/javascript/userCookie.js"></script>
@@ -31,11 +32,11 @@
         console.log("Recieved refresh order:",msg);
     });
 
-    socket.emit('join', {'username': username , 'room': {{game_id}}});
+    socket.emit('join', {'username': username , 'room': game_id});
 
     // if user has already submitted answer, disable form and wait for next question.
 
-    socket.emit('check_answer_submitted',{'username':username,'game_id':{{game_id}},'question_id':{{question['id']}}})
+    socket.emit('check_answer_submitted',{'username':username,'game_id':game_id,'question_id':{{question['id']}}})
 
     function updateManager(){
 	    msg = {
