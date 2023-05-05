@@ -3,6 +3,32 @@
 <input type="number" name="total_questions"/>
 <button type="button" onclick="createGame()" >Submit</button>
 </form>
+<style>
+#question-selection-box{
+	height:50vh;
+	width:20vw;
+	border:solid 1px gray;
+	overflow-y:scroll;
+	display:flex;
+	flex-direction: column;
+}
+
+.question-card.selected{
+	background-color:green;
+}
+.question-card{
+	cursor:pointer;
+}
+.question-card:hover:not(.selected){
+	background-color:hsl(0,0%,90%)
+}
+.question-card.selected:hover{
+	background-color:hsl(120,50%,50%)
+}
+</style>
+<div id="question-selection-box">
+</div>
+<div>Selected Questions: { <span id="selected-questions"></span>}</div>
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
 <script>
@@ -11,12 +37,15 @@
 <script src="/static/javascript/cookieFunctions.js"></script>
 <script src="/static/javascript/userCookie.js"></script>
 <script>
+
+	let question_selection_box = document.getElementById("question-selection-box")
+	let selected_questions = [];
 	document.getElementById("username").value = username;
 	form = document.getElementsByTagName('form')[0];
 
 	function createGame() {
 		formData = new FormData(form);
-		msg = {}
+		msg = {'selected_questions':selected_questions}
 		formData.forEach((value, key) => msg[key] = value)
 		console.log('create_game_request',msg)
     		socket.emit('create_game_request', msg)
@@ -27,5 +56,68 @@
 		setCookie("username",msg['username'],1)
 		window.location = `/manage-game/${msg['game_id']}`
 	});
+
+
+	let question_id = 1
+	socket.on('question_card_response', function(msg){
+		// if msg is False, then we are out of questions to render.
+		if(msg){
+			question_card = msg['question_card']
+			question_selection_box.innerHTML += question_card
+			if (! isScrollable(question_selection_box)){
+				// populate box until it's able to be populated by scroll listener
+				socket.emit('question_card_request',question_id)
+				question_id ++;
+			}
+		}else{
+			question_selection_box.removeEventListener('scroll',infiniteScrollHandler)
+		}
+	});
+
+
+	function isScrollable(el){
+		return el.scrollHeight > el.clientHeight
+	}
+
+
+	// initial population of question box
+	socket.emit('question_card_request',question_id)
+	question_id++
+
+	// infinite scroll! So cool!
+	question_selection_box.addEventListener('scroll', infiniteScrollHandler);
+
+	function infiniteScrollHandler(){
+		if (question_selection_box.scrollHeight - question_selection_box.scrollTop == question_selection_box.clientHeight){
+
+			for(i=0;i<3;i++){	
+				socket.emit('question_card_request',question_id)
+				question_id += 1
+			}
+		}
+	}
+
+	selected_questions_el = document.getElementById('selected-questions')
+	function selectQuestion(question_id){
+		activated_card = document.getElementById(`card-${question_id}`)
+		activated_card.classList.add('selected')
+		activated_card.onclick = ()=>deselectQuestion(question_id)
+		selected_questions.push(question_id)
+		selected_questions_el.innerText += question_id + ' '
+	}
+
+	function deselectQuestion(question_id){
+		activated_card = document.getElementById(`card-${question_id}`)
+		activated_card.classList.remove('selected')
+		// this removes question_id from selected questions
+		selected_questions = selected_questions.filter( x => x !=question_id)
+		new_inner_text = ''
+		for(x of selected_questions){
+			new_inner_text = new_inner_text + x + ' '
+		}
+		selected_questions_el.innerText = new_inner_text
+		activated_card.onclick = ()=>selectQuestion(question_id)
+	}
+
 
 </script>

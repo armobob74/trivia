@@ -4,7 +4,7 @@ import random
 from flask_socketio import SocketIO, join_room
 from sqlalchemy.exc import IntegrityError
 from website.string_utils import uniquify
-from flask import request
+from flask import request, render_template
 
 def create_all():
     """ Create all db tables. Meant to be called from command line."""
@@ -12,8 +12,31 @@ def create_all():
         db.create_all()
 
 app = create_app()
+
 socketio = SocketIO(app)
 create_all()
+
+
+@socketio.on('question_card_request')
+def question_card(question_id):
+    """
+    let's implement an infinite scroll, because why not?
+    """
+    question = Question.query.get(question_id)
+    if question is None:
+        #front end will know to stop infinite scroll
+        socketio.emit('question_card_response',False) 
+    else:
+        card_data = {
+                    'question':question.text,
+                    'answer':question.__dict__[question.correct],
+                    'question_id':question_id
+                }
+        question_card_html = render_template('question_card.html', **card_data)
+        msg = {
+                "question_card":question_card_html,
+                }
+        socketio.emit('question_card_response',msg,room=request.sid)
 
 @socketio.on('join')
 def on_join(data):
@@ -203,9 +226,11 @@ def create_game(msg):
         else:
             max_id = max([x.id for x in all_games])
         new_game_id = max_id + 1
+
         new_game = Game(
                 id=new_game_id,
-                total_questions=int(msg['total_questions']),
+                total_questions=len(msg['selected_questions']),
+                questions=[Question.query.get(qid) for qid in msg['selected_questions']],
                 current_question=1,
                 )
 
