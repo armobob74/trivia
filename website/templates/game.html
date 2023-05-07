@@ -54,7 +54,6 @@
 
     // [TODO] make answer_letter update
     let update_msg = {
-		    'username':username,
 		    'game_id':{{game_id}},
 		    'question_id':{{question['id']}},
     }
@@ -72,11 +71,13 @@
     }
 
     function updateManager(){
+	    update_msg['username'] = username // done here to avoid race condition
 	    socket.emit('update_manager_request',update_msg)
 	    console.log('Sent update_manager_request',update_msg)
     }
 
     function submitAnswer(){
+	update_msg['username'] = username // done here to avoid race condition
 	socket.emit('submit_answer_request',update_msg)
 	console.log('Sent submit_answer_request', update_msg)
 	disableForm()
