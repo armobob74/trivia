@@ -1,18 +1,61 @@
-form {
+* {
+  box-sizing: border-box;
+  margin: 0px; }
+
+html {
+  height: 100vh; }
+
+body {
   display: flex;
   flex-direction: column;
+  height: 100%; }
+
+#question-text {
+  text-align: center;
+  flex-grow: 0.33;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly; }
+
+form {
+  display: flex;
+  flex-grow: 1;
+  gap: 10px;
+  flex-direction: column;
   align-items: center; }
+  form div.multi-choice {
+    background-color: lightgreen;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    transition: all 0.3s ease-in-out;
+    min-width: 30vw; }
+  form div.multi-choice.selected:not(.disabled) {
+    background-color: green; }
+  form div.multi-choice:hover:not(.disabled) {
+    background-color: green;
+    cursor: pointer; }
+  form div.multi-choice.disabled {
+    background-color: lightgray;
+    cursor: not-allowed; }
+  form div.multi-choice.selected.disabled {
+    background-color: gray; }
 
 button {
-  margin-top: 20px;
   padding: 10px 20px;
   font-size: 16px;
   color: #fff;
   background-color: #444;
   border: none;
   border-radius: 50px;
-  cursor: pointer;
   transition: all 0.3s ease-in-out; }
 
-button:hover {
-  background-color: black; }
+button:hover:not(:disabled) {
+  background-color: black;
+  cursor: pointer; }
+
+button:disabled {
+  background-color: gray;
+  cursor: not-allowed; }

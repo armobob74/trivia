@@ -2,16 +2,24 @@
 {% block head %}
 <title>Game {{game_id}}</title>
 <link rel="stylesheet" href="/static/css/game.css">
-
 {% endblock %}
 {% block body %}
-<p>{{ question['text'] }}</p>
-<form action="/submit-answer" method="POST">
-	<input type="radio" name="answer" id="A" value="A">{{question['A']}}</input>
-	<input type="radio" name="answer" id="B" value="B">{{question['B']}}</input>
-	<input type="radio" name="answer" id="C" value="C">{{question['C']}}</input>
-	<input type="radio" name="answer" id="D" value="D">{{question['D']}}</input>
-	<button type="button" onclick="submitAnswer();updateManager();" >Submit</button>
+
+<div id="question-text"><h3>{{ question['text'] }}</h3></div>
+
+<form onsubmit="console.log('submitted')" id="question-form">
+
+	<input type="hidden" name="answer" id="answer" value=""/>
+
+	<div class="multi-choice" id="multi-choice-A" onclick="setAnswer('A')">{{question['A']}}</div>
+
+	<div class="multi-choice" id="multi-choice-B" onclick="setAnswer('B')">{{question['B']}}</div>
+
+	<div class="multi-choice" id="multi-choice-C" onclick="setAnswer('C')">{{question['C']}}</div>
+
+	<div class="multi-choice" id="multi-choice-D" onclick="setAnswer('D')">{{question['D']}}</div>
+
+	<button type="button" disabled="true" onclick="submitAnswer();updateManager();" >Submit</button>
 </form>
 
 
@@ -23,8 +31,8 @@
 <script src="/static/javascript/cookieFunctions.js"></script>
 <script src="/static/javascript/userCookie.js"></script>
 <script>
-    let question_form = document.getElementsByTagName('form')[0]
-    
+    let question_form = document.getElementById('question-form')
+    let btn = question_form.getElementsByTagName('button')[0]
     socket.on('connect', function() {
         console.log('Connected to server');
     });
@@ -44,46 +52,45 @@
 
     socket.emit('check_answer_submitted',{'username':username,'game_id':game_id,'question_id':{{question['id']}}})
 
-    function updateManager(){
-	    inputs = question_form.getElementsByTagName('input')
-	    for(input of inputs){
-		if(input.name == 'answer' && input.checked){
-			answer_letter = input.value
-		}
-	    }
-	    msg = {
+    // [TODO] make answer_letter update
+    let update_msg = {
 		    'username':username,
 		    'game_id':{{game_id}},
 		    'question_id':{{question['id']}},
-		    'answer_letter':answer_letter	
-	    }
-	    socket.emit('update_manager_request',msg)
-	    console.log('Sent update_manager_request',msg)
+    }
+
+    function setAnswer(letter){
+	update_msg['answer_letter'] = letter
+	document.getElementById("answer").value = letter
+	btn.disabled = false
+
+	for(mc of document.getElementsByClassName('multi-choice')){
+		mc.classList.remove('selected')
+	}
+	    selected_mc = document.getElementById(`multi-choice-${letter}`)    
+	    selected_mc.classList.add('selected')
+    }
+
+    function updateManager(){
+	    socket.emit('update_manager_request',update_msg)
+	    console.log('Sent update_manager_request',update_msg)
     }
 
     function submitAnswer(){
-	    inputs = question_form.getElementsByTagName('input')
-	    for(input of inputs){
-		if(input.name == 'answer' && input.checked){
-			answer_letter = input.value
-		}
-	    }
-	    msg = {
-		    'username':username,
-		    'game_id':{{game_id}},
-		    'question_id':{{question['id']}},
-		    'answer_letter':answer_letter	
-	    }
-	socket.emit('submit_answer_request',msg)
-	console.log('Sent submit_answer_request')
+	socket.emit('submit_answer_request',update_msg)
+	console.log('Sent submit_answer_request', update_msg)
 	disableForm()
     }
 
+    // [TODO] modernize
     function disableForm(){
 		for(inpt of question_form.getElementsByTagName('input')){
 			inpt.disabled=true;
 		}
-		btn = question_form.getElementsByTagName('button')[0]
+	    for (dv of question_form.getElementsByClassName('multi-choice')){
+		dv.classList.add('disabled');
+		dv.onclick = "";
+	    }
 		btn.outerHTML = '<p>submitted</p>'
     }
 
@@ -93,12 +100,10 @@
 	console.log('Recieved check_answer_submitted_response:',msg)
 	if(msg['bool']==true){
 		disableForm()
-		selected_answer = document.getElementById(msg['answer'])
-		selected_answer.checked=true;
+		letter = msg['answer']
+		selected_answer = document.getElementById(`multi-choice-${letter}`)
+		selected_answer.classList.add('selected');
 	}else{
-		for(inpt of document.getElementsByTagName('input')){
-			inpt.checked=false;
-		}
 
 	}
     });
