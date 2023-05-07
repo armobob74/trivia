@@ -40,11 +40,8 @@ def game(game_id):
 @views.route('/create-game', methods=['GET','POST'])
 def createGame():
     """
-    Get the game from the database
-    display the game's current question
+    The actual game creation part is handled by websocket
     """
-    if request.method == 'POST':
-        return redirect(f'/manage-game/{new_game.id}')
     return render_template('create_game.html')
 
 @views.route('/manage-game/<string:game_id>', methods=['GET'])
@@ -58,9 +55,10 @@ def manageGame(game_id):
     players = game.players
     for player in players:
         player.total_correct = sum([answer.correct for answer in player.answers])
+    users = [(player.username, player.submitted_answer,player.total_correct) for player in players if player.manager == False]
     d = {
-        'num_players':len(players),
-        'users':[(player.username, player.submitted_answer,player.total_correct) for player in players],
+        'num_players':len(users),
+        'users':users,
         'answers_submitted':len([p for p in players if p.submitted_answer]),
     }
     return render_template('manage_game.html', game_id=game_id,**d)
