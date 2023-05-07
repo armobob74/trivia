@@ -1,0 +1,29 @@
+[
+  {
+    "text": "What did Yankee Doodle stick in his cap?",
+    "A": "Feather",
+    "B": "Spaghetti",
+    "C": "Pencil",
+    "D": "Ribbon",
+    "correct": "A",
+    "difficulty": 1
+  },
+  {
+    "text": "What word completes the phrase: “Everything but the kitchen”?",
+    "A": "Sink",
+    "B": "Door",
+    "C": "Countertop",
+    "D": "Remodel",
+    "correct": "A",
+    "difficulty": 2
+  },
+  {
+    "text": "What was the first theatrical feature film to be completely computer-animated?",
+    "A": "Shrek",
+    "B": "Monsters Inc.",
+    "C": "Toy Story",
+    "D": "Antz",
+    "correct": "C",
+    "difficulty": 3
+  }
+]
