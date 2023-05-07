@@ -70,10 +70,9 @@ def refresh_order(data):
 
         #game = Game.query.get(game_id) #reload the query to get the relevant completed_questions (is this necessary?)
         # select a new question that has not yet been attempted
-        # [TODO] find a way to do this more efficiently lol
         completed_question_ids = {q.question for q in game.completed_questions}
-        all_question_ids = {q.id for q in Question.query.all()}
-        unseen_question_ids = all_question_ids - completed_question_ids
+        game_question_ids = {q.id for q in game.questions}
+        unseen_question_ids = game_question_ids - completed_question_ids
         next_question_id = random.choice(list(unseen_question_ids))
         game.current_question = next_question_id
 

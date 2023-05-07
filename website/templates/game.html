@@ -1,5 +1,11 @@
-<p>{{ question['text'] }}</p>
+{% extends "skeleton.html"%}
+{% block head %}
+<title>Game {{game_id}}</title>
+<link rel="stylesheet" href="/static/css/game.css">
 
+{% endblock %}
+{% block body %}
+<p>{{ question['text'] }}</p>
 <form action="/submit-answer" method="POST">
 	<input type="radio" name="answer" id="A" value="A">{{question['A']}}</input>
 	<input type="radio" name="answer" id="B" value="B">{{question['B']}}</input>
@@ -99,3 +105,4 @@
 
 
 </script>
+{% endblock %}

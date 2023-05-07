@@ -1,5 +1,10 @@
+{% extends "skeleton.html"%}
+{% block head %}
+<title>Manage Game {{game_id}}</title>
+{% endblock %}
+{% block body %}
 <button onclick="refreshRoom('managing {{game_id}}')">Next Question</button>
-<h3><span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h3>
+<h3>Answers submitted: <span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h3>
 <table id="player_table">
 	<thead>
 		<th>Name</th>
@@ -96,3 +101,4 @@
 	    addPlayer(msg)
     });
 </script>
+{% endblock %}

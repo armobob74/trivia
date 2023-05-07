@@ -1,8 +1,6 @@
-<form action="/create-game" method="POST">
-<input type="string" name="username" id="username" value=""/>
-<input type="number" name="total_questions"/>
-<button type="button" onclick="createGame()" >Submit</button>
-</form>
+{% extends "skeleton.html"%}
+{% block head %}
+<title>Index</title>
 <style>
 #question-selection-box{
 	height:50vh;
@@ -26,6 +24,13 @@
 	background-color:hsl(120,50%,50%)
 }
 </style>
+{% endblock %}
+{% block body %}
+<form action="/create-game" method="POST">
+<input type="string" name="username" id="username" value=""/>
+<input type="number" name="total_questions"/>
+<button type="button" onclick="createGame()" >Submit</button>
+</form>
 <div id="question-selection-box">
 </div>
 <div>Selected Questions: { <span id="selected-questions"></span>}</div>
@@ -118,6 +123,5 @@
 		selected_questions_el.innerText = new_inner_text
 		activated_card.onclick = ()=>selectQuestion(question_id)
 	}
-
-
 </script>
+{% endblock %}
