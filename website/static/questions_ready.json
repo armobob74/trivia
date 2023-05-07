@@ -25,5 +25,95 @@
     "D": "Antz",
     "correct": "C",
     "difficulty": 3
+  },
+  {
+    "text": "Traditionally, an “amuse-bouche” arrives right before what part of the meal?",
+    "A": "Appetizers",
+    "B": "Dessert",
+    "C": "Drinks",
+    "D": "Entree",
+    "correct": "A",
+    "difficulty": 4
+  },
+  {
+    "text": "In the game of Candy Land, which player goes first?",
+    "A": "The youngest",
+    "B": "The oldest",
+    "C": "Determined by rock-paper-scissors",
+    "D": "Determined by dice-roll",
+    "correct": "A",
+    "difficulty": 5
+  },
+  {
+    "text": "In the popular comic strip, what color is Hagar the Horrible’s beard?",
+    "A": "Black",
+    "B": "Brown",
+    "C": "Red",
+    "D": "Blonde",
+    "correct": "C",
+    "difficulty": 6
+  },
+  {
+    "text": "What spice comes from the crocus flower?",
+    "A": "Cumin",
+    "B": "Star anise",
+    "C": "Saffron",
+    "D": "Clove",
+    "correct": "C",
+    "difficulty": 7
+  },
+  {
+    "text": "What was the first product to have its barcode scanned at purchase?",
+    "A": "Marlboro Cigarettes",
+    "B": "Wrigley's chewing gum",
+    "C": "Apple Lisa",
+    "D": "Tropicana Orange Juice",
+    "correct": "B",
+    "difficulty": 11
+  },
+  {
+    "text": "Parmesan cheese is named for an Italian province called what?",
+    "A": "Pisa",
+    "B": "Arizona",
+    "C": "Parma",
+    "D": "Rome",
+    "correct": "C",
+    "difficulty": 1
+  },
+  {
+    "text": "Which of these famous fictional animals is a ruminant?",
+    "A": "Bambi",
+    "B": "Dumbo",
+    "C": "Simba",
+    "D": "Mushu",
+    "correct": "A",
+    "difficulty": 2
+  },
+  {
+    "text": "Which popular root beer brand typically contains caffeine?",
+    "A": "Barq’s",
+    "B": "Mug",
+    "C": "A&W",
+    "D": "Virgil's",
+    "correct": "A",
+    "difficulty": 3
+  },
+  {
+    "text": "Which of these elements would earn you the highest score in Scrabble?",
+    "A": "Oxygen",
+    "B": "Spaghetti",
+    "C": "Onions",
+    "D": "Responsible",
+    "correct": "A",
+    "difficulty": 4
+  },
+  {
+    "text": "What is the correct spelling of the Pennsylvania town famous for its groundhog?",
+    "A": "Phunxatuny",
+    "B": "Punksatony",
+    "C": "Punxsutawney",
+    "D": "Philadelphia",
+    "correct": "C",
+    "difficulty": 5
   }
 ]
