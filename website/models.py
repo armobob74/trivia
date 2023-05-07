@@ -62,5 +62,6 @@ class Question(db.Model):
     B = db.Column(db.String)
     C = db.Column(db.String)
     D = db.Column(db.String)
-    correct = db.Column(db.String(length=1)) #the letter of the correct answer
+    correct = db.Column(db.String(length=1), nullable=False) #the letter of the correct answer
+    difficulty = db.Column(db.Integer)
 

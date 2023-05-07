@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template, request, flash, jsonify, redirect, url_for, abort
 from website.models import *
 import pdb
-import re
-import random
+import os
+import json
 from .string_utils import randstr, uniquify
 
 views = Blueprint('views', __name__)
@@ -70,21 +70,12 @@ def populateDb():
     """
     populate the database when it gets destroyed
     """
-    for _ in range(50):
-        newQuestion = Question(
-            text = randstr(16),
-            A = '123',
-            B = '123',
-            C = 'abc',
-            D = '123',
-            correct = 'C'
-            )
+    with open('website/static/questions_ready.json') as f:
+        questions = json.load(f)
+
+    for question in questions: 
+        newQuestion = Question(**question)
         db.session.add(newQuestion)
-    db.session.commit()
-    new_game = Game(
-            total_questions=10,
-            current_question=1,
-            )
-    db.session.add(new_game)
+
     db.session.commit()
     return redirect('/')
