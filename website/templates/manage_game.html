@@ -3,6 +3,7 @@
 <title>Manage Game {{game_id}}</title>
 {% endblock %}
 {% block body %}
+<h1>Game ID: {{game_id}}</h1>
 <button onclick="refreshRoom('managing {{game_id}}')">Next Question</button>
 <h3>Answers submitted: <span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h3>
 <table id="player_table">
