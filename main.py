@@ -84,7 +84,13 @@ def refresh_order(data):
 
         # order refresh
         room_to_refresh = game_id
+        question = Question.query.get(next_question_id)
+        new_question_msg = {
+        'question_text':question.text,
+        'answer_text':question.__dict__[question.correct],
+                }
         socketio.emit('refresh_order','REFRESH',room=room_to_refresh)
+        socketio.emit('refresh_order_response',new_question_msg,room=request.sid)
 
 
 #doing this because I don't want form to be re-eneabled by a simple url-change or refresh.

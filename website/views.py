@@ -52,6 +52,7 @@ def manageGame(game_id):
     """
     #[TODO] implement a nice management interface thingy.
     game = Game.query.get_or_404(game_id)
+    question = Question.query.get(game.current_question)
     players = game.players
     for player in players:
         player.total_correct = sum([answer.correct for answer in player.answers])
@@ -60,6 +61,8 @@ def manageGame(game_id):
         'num_players':len(users),
         'users':users,
         'answers_submitted':len([p for p in players if p.submitted_answer]),
+        'question_text':question.text,
+        'answer_text':question.__dict__[question.correct],
     }
     return render_template('manage_game.html', game_id=game_id,**d)
 

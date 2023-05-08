@@ -1,60 +1,23 @@
 {% extends "skeleton.html"%}
 {% block head %}
 <title>Manage Game {{game_id}}</title>
-<style>
-body {
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	grid-template-rows: repeat(5, 1fr);
-	grid-column-gap: 2px;
-	grid-row-gap: 2px;
-}
-div.g1 { grid-area: 1 / 1 / 2 / 4; }
-div.g2 {
-	grid-area: 1 / 4 / 2 / 6; 
-	display:flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	align-items: center;
-
-}
-div.g3 {
-	grid-area: 2 / 1 / 6 / 6; 
-	overflow-y:scroll;
-}
-
-table{
-	border-collapse:collapse;
-	width:100%;
-}
-
-th, td{
-	border: solid 1px gray;
-	padding:5px;
-}
-
-tr:nth-child(even){
-	background-color:#dddddd;
-}
-
-div{border: solid 1px black;}
-
-button{
-	width:60%;
-	height:60%;
-	cursor:pointer;
-}
-</style>
+<link rel="stylesheet" href="/static/css/manage_game.css">
 {% endblock %}
 {% block body %}
 <div class="g1">
 <h1>Game ID: {{game_id}}</h1>
-<h3>Answers submitted: <span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h3>
+<h2>Answers submitted: <span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h2>
 </div>
 <div class="g2">
 <button onclick="refreshRoom('managing {{game_id}}')">Next Question</button>
 </div>
 <div class="g3">
+	<h3>Question:</h3>
+	<p id="question-text">{{question_text}}</p>
+	<h3>Answer:</h3>
+	<p id="answer-text">{{answer_text}}</p>
+</div>
+<div class="g4">
 <table id="player_table">
 	<thead>
 		<th>Name</th>
@@ -150,5 +113,16 @@ button{
 	    console.log('Recieved player_created_notification')
 	    addPlayer(msg)
     });
+
+    socket.on('refresh_order_response', function(msg){
+	    /* msg format:
+	    	{'question_text',
+		'answer_text', }
+	     */
+	    console.log('Recieved refresh_order_response',msg)
+	    document.getElementById('question-text').innerText = msg['question_text']
+	    document.getElementById('answer-text').innerText = msg['answer_text']
+    });
+
 </script>
 {% endblock %}
