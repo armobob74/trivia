@@ -1,12 +1,13 @@
 {% extends "skeleton.html"%}
 {% block head %}
 <title>Index</title>
+<link rel="stylesheet" href="/static/css/index.css">
 {% endblock %}
 {% block body %}
 <a href="/create-game">create game</a>
 <form action="/" method="POST">
 <label for="game_id">Game ID</label>
 <input type="text" id="game_id" name="game_id"></input>
-<button type="submit">Checkout</button>
+<button type="submit">Enter</button>
 </form>
 {% endblock %}

@@ -1,11 +1,4 @@
-$gradient-height:3vh;
-$blocc-height:35vh;
-
-$primary-hue:180;
-$d:15%;
-$bg-color-1:hsl($primary-hue,100%,$d);
-$txt-color-1:hsl($primary-hue,100%,100%-$d);
-
+@import 'variables.scss';
 
 *{
 
@@ -15,8 +8,15 @@ $txt-color-1:hsl($primary-hue,100%,100%-$d);
 html{
 
 	height:100vh;
+	padding:10px;
+	background-color: $bg-color-1;
 }
 body{
-    height:100vh;
+	background-color: $bg-color-2;
+	border-radius:10px;
+	height:100%;
 }
 
+body>div{
+	background-color: $bg-color-2;
+}
