@@ -12,7 +12,7 @@
 <button onclick="refreshRoom('managing {{game_id}}')">Next Question</button>
 </div>
 <div class="g3">
-	<h3>Question:</h3> <p id="question-text">{{question_text}}</p>
+	<h3>Question <span id="current-question-number">{{num_completed_questions+1}}</span>/{{num_questions}}:</h3> <p id="question-text">{{question_text}}</p>
 	<h3>Answer:</h3> <p id="answer-text">{{answer_text}}</p>
 </div>
 <div class="g4">

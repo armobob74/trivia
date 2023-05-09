@@ -63,6 +63,8 @@ def manageGame(game_id):
         'answers_submitted':len([p for p in players if p.submitted_answer]),
         'question_text':question.text,
         'answer_text':question.__dict__[question.correct],
+        'num_questions':len(game.questions),
+        'num_completed_questions':len(game.completed_questions),
     }
     return render_template('manage_game.html', game_id=game_id,**d)
 
