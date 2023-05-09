@@ -1,13 +1,16 @@
+@import 'variables.scss';
 body{
 	display:flex;
 	flex-direction:column;
 	align-items: center;
-	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	background-color:lighten($bg-color-1,80%);
+
 }
 a {
-	position:absolute;
+	position:relative;
+	align-self: flex-end;
 	top:10px;
-	right:5vw;
+	right:15px;
 }
 
 form {
@@ -20,6 +23,7 @@ form {
 	padding:20px;
 	box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 	border-radius: 10px;
+	background-color:$bg-color-2;
 }
 
 label{
@@ -29,4 +33,11 @@ label{
 button{
 	margin-top:10px;
 	border:none;
+	font-size:100%;
+	background-color: $trivia-light-green;
+	cursor: pointer;
+	transition: all 0.2s ;
+}
+button:hover{
+	background-color:darken($trivia-light-green,20%);
 }

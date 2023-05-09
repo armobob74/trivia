@@ -1,3 +1,8 @@
 $bg-color-1: rgb(131,58,180);
+//$border-color-1:lighten($bg-color-1,30%);
+$border-color-1:lighten($bg-color-1,35%);
 $bg-color-2:white;
 $txt-color-1:black;
+
+$trivia-light-green:hsl(126, 52%, 63%);
+$trivia-dark-green: hsl(126, 39%, 32%);
