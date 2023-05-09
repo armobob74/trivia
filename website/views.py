@@ -50,7 +50,6 @@ def manageGame(game_id):
     Get the game from the database
     display the game's current question
     """
-    #[TODO] implement a nice management interface thingy.
     game = Game.query.get_or_404(game_id)
     question = Question.query.get(game.current_question)
     players = game.players
@@ -82,3 +81,35 @@ def populateDb():
 
     db.session.commit()
     return redirect('/')
+
+@views.route('/game-completed/<string:game_id>', methods=['GET'])
+def gameCompleted(game_id):
+    """
+    """
+    game = Game.query.get_or_404(game_id)
+    question = Question.query.get(game.current_question)
+    players = game.players
+    for player in players:
+        player.total_correct = sum([answer.correct for answer in player.answers])
+    users = [[player.username, player.total_correct] for player in players if player.manager == False]
+
+    max_correct = max([p.total_correct for p in players])
+
+    users.sort(key=lambda x: x[1],reverse=True)
+
+    for i in range(len(users)):
+        users[i].append(i+1)
+        
+
+    d = {
+        'num_players':len(users),
+        'users':users,
+        'max_correct':max_correct,
+        'num_questions':len(game.questions),
+        'num_completed_questions':len(game.completed_questions),
+    }
+
+    if d['num_completed_questions'] >= d['num_questions']:
+        return render_template('game_completed.html', game_id=game_id,**d)
+    else:
+        return "This game is not yet complete."

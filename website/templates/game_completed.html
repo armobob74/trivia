@@ -1,0 +1,29 @@
+{% extends "skeleton.html"%}
+{% block head %}
+<title>Game {{game_id}} Report</title>
+<link rel="stylesheet" href="/static/css/game_completed.css">
+{% endblock %}
+{% block body %}
+<h2>Rankings</h2>
+<table>
+	<thead>
+		<tr>
+			<th>#</th>
+			<th>Name</th>
+			<th>Total Correct</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for username, total_correct, rank in users %}
+		<tr>
+			<td><strong>{{rank}}</strong></td>
+			<td>{{username}}</td>
+			<td>
+				<div class="bar" style="width:{{ 100 * total_correct/(max_correct+0.001)}}%">{{total_correct}}</div>
+			</td>
+
+		</tr>
+		{%endfor%}
+	</tbody>
+</table>
+{% endblock %}

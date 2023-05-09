@@ -1,7 +1,6 @@
 @import 'variables.scss';
 
 *{
-
 	box-sizing:border-box;
 	margin:0px; // margin is not part of box-sizing, so it can mess with desired layout when trying to get everything to fit on a single page.
 }

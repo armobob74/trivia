@@ -109,6 +109,10 @@
 	}
     });
 
+    socket.on('game_completed_notification', function(msg){
+	    console.log('Recieved game_completed_notification')
+	    window.location = '/game-completed/{{game_id}}'
+    });
 
 </script>
 {% endblock %}

@@ -65,14 +65,22 @@ def refresh_order(data):
                 game=game_id,
                 question=game.current_question
                 )
+
         db.session.add(completed_question)
         db.session.commit()
 
-        #game = Game.query.get(game_id) #reload the query to get the relevant completed_questions (is this necessary?)
         # select a new question that has not yet been attempted
         completed_question_ids = {q.question for q in game.completed_questions}
+
         game_question_ids = {q.id for q in game.questions}
         unseen_question_ids = game_question_ids - completed_question_ids
+
+        if len(unseen_question_ids) >= 0:
+            socketio.emit('game_completed_notification', room=room)
+            socketio.emit('game_completed_notification', room=game_id)
+            return
+        
+
         next_question_id = random.choice(list(unseen_question_ids))
         game.current_question = next_question_id
 

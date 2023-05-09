@@ -112,6 +112,15 @@
 	    addPlayer(msg)
     });
 
+    socket.on('game_completed_notification', function(msg){
+	    /* msg format:
+	    	none
+	     */
+	    console.log('Recieved game_completed_notification')
+	    window.location = '/game-completed/{{game_id}}'
+    });
+
+
     socket.on('refresh_order_response', function(msg){
 	    /* msg format:
 	    	{'question_text',
