@@ -75,7 +75,8 @@ def refresh_order(data):
         game_question_ids = {q.id for q in game.questions}
         unseen_question_ids = game_question_ids - completed_question_ids
 
-        if len(unseen_question_ids) >= 0:
+        pdb.set_trace() 
+        if len(unseen_question_ids) == 0:
             socketio.emit('game_completed_notification', room=room)
             socketio.emit('game_completed_notification', room=game_id)
             return
