@@ -2,3 +2,5 @@ Flask
 Flask-SocketIO
 Flask-SQLAlchemy
 libsass
+gunicorn
+gevent-websocket
