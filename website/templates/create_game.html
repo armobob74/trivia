@@ -42,8 +42,11 @@ body {
 	var socket = io.connect('/'); //needs to come before cookieFunctions
 </script>
 <script src="/static/javascript/cookieFunctions.js"></script>
-<script src="/static/javascript/userCookie.js"></script>
+
 <script>
+
+	let username=prompt("Please choose a username")
+	setCookie("username", username,1)
 
 	let question_selection_box = document.getElementById("question-selection-box")
 	let selected_questions = [];
