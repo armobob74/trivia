@@ -60,11 +60,15 @@
     let num_players = Number(num_players_span.innerText)
     let n_ans_submitted = Number(answers_submitted.innerText)
     
-    socket.on('connect', function() {
-        console.log('Connected to server');
+    socket.on('connect_error', function() {
+        console.log('Error connecting, trying to reconnect');
     });
 
-    socket.emit('join', {'username': username , 'room':"managing {{game_id}}"});
+    socket.on('connect', function() {
+        console.log('Connected to server');
+    	socket.emit('join', {'username': username , 'room':"managing {{game_id}}"});
+    });
+
 
     socket.on('join_room_response', function(msg) {
         console.log("Recieved join_room_response:",msg);

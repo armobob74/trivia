@@ -33,8 +33,14 @@
 <script>
     let question_form = document.getElementById('question-form')
     let btn = question_form.getElementsByTagName('button')[0]
+
+    socket.on('connect_error', function() {
+        console.log('Error connecting, trying to reconnect');
+    });
+
     socket.on('connect', function() {
         console.log('Connected to server');
+    	socket.emit('join', {'username': username , 'room': game_id});
     });
     
     socket.on('join_room_response', function(msg) {
@@ -46,7 +52,6 @@
         console.log("Recieved refresh order:",msg);
     });
 
-    socket.emit('join', {'username': username , 'room': game_id});
 
     // if user has already submitted answer, disable form and wait for next question.
 
