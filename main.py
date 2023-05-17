@@ -109,6 +109,11 @@ def checkAnswerSubmitted(data):
     question_id = data['question_id']
 
     player = Player.query.filter_by(username=username).first()
+    if player == None:
+        # then this request must have been submitted *before* player creation
+        # in that case, answer is not submitted.
+        socketio.emit('check_answer_submitted_response',{'bool':False,'answer':''})
+        return None
     game_answers = [a for a in player.answers if a.game == game_id]
     answered_question_ids = [a.question for a in game_answers]
 
