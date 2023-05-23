@@ -25,8 +25,8 @@
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
 <script>
-	var game_id = {{game_id}}
-	var socket = io.connect('/'); //needs to come before cookieFunctions
+	let game_id = {{game_id}}
+	let socket = io.connect('/'); //needs to come before cookieFunctions
 </script>
 <script src="/static/javascript/cookieFunctions.js"></script>
 <script src="/static/javascript/userCookie.js"></script>
@@ -55,7 +55,7 @@
 
     // if user has already submitted answer, disable form and wait for next question.
 
-    socket.emit('check_answer_submitted',{'username':username,'game_id':game_id,'question_id':{{question['id']}}})
+    socket.emit('check_answer_submitted',{'user_id':user_id,'game_id':game_id,'question_id':{{question['id']}}})
 
     // [TODO] make answer_letter update
     let update_msg = {
@@ -77,12 +77,15 @@
 
     function updateManager(){
 	    update_msg['username'] = username // done here to avoid race condition
+	    update_msg['user_id'] = user_id // done here to avoid race condition
 	    socket.emit('update_manager_request',update_msg)
 	    console.log('Sent update_manager_request',update_msg)
     }
 
     function submitAnswer(){
-	update_msg['username'] = username // done here to avoid race condition
+	update_msg['user_id'] = user_id // done here to avoid race condition
+	update_msg['username'] = username 
+
 	socket.emit('submit_answer_request',update_msg)
 	console.log('Sent submit_answer_request', update_msg)
 	disableForm()

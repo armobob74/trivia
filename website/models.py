@@ -41,7 +41,7 @@ class Player(db.Model):
     answers = db.relationship('Answer')
     manager = db.Column(db.Boolean, default=False)
     submitted_answer = db.Column(db.Boolean, default=False) # keep track of if player has submitted an answer to game's current_question
-    username = db.Column(db.String,unique=True)
+    username = db.Column(db.String)
 
 
 class Answer(db.Model):

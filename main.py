@@ -104,11 +104,11 @@ def refresh_order(data):
 #doing this because I don't want form to be re-eneabled by a simple url-change or refresh.
 @socketio.on('check_answer_submitted')
 def checkAnswerSubmitted(data):
-    username = data['username']
+    user_id = data['user_id']
     game_id = data['game_id']
     question_id = data['question_id']
 
-    player = Player.query.filter_by(username=username).first()
+    player = Player.query.get(user_id)
     if player == None:
         # then this request must have been submitted *before* player creation
         # in that case, answer is not submitted.
@@ -136,6 +136,7 @@ def updateManager(data):
     print("Recieved update_manager_request from", data['username'])
     print("\n"*3)
     username = data['username']
+    user_id = data['user_id']
     game_id = data['game_id']
     question_id = data['question_id']
 
@@ -143,7 +144,7 @@ def updateManager(data):
     answer_letter = data['answer_letter']
     correct_tf = answer_letter == current_question.correct
 
-    player = Player.query.filter_by(username=username).first()
+    player = Player.query.get(user_id)
     player.submitted_answer = True
     db.session.commit()
     room = f'managing {game_id}'
@@ -166,52 +167,51 @@ def createPlayer(msg):
         'game_id':str
     }
     """
-    # make sure username is unique.
-    # add a special code after the username, like (2).
+    # make sure username is unique for the game.
+    # If not, add a special code after the username, like (2).
+    game = Game.query.get(msg['game_id'])
+    game_playernames = [u.username for u in game.players]
+    username = uniquify(msg['username'], game_playernames)
 
     player = Player(
             game=msg['game_id'],
             manager=False,
-            username=msg['username'],
+            username=username,
             )
-    try:
-        db.session.add(player)
-        db.session.commit()
-    except IntegrityError:
-        db.session.rollback()
-        usernames = [p.username for p in Player.query.all()]
-        username = uniquify(msg['username'],usernames) 
-        msg['username'] = username
-        player = Player(
-                game=msg['game_id'],
-                manager=False,
-                username=username,
-                )
-        db.session.add(player)
-        db.session.commit()
+    db.session.add(player)
+    db.session.commit()
 
-    room = f'managing {msg["game_id"]}'
+    # this line updates player so that player.id is not None
+    db.session.refresh(player)
+
+    manager_room = f'managing {msg["game_id"]}'
 
     # notifies client that username was created. Necessary in case there is a 
     # conflict and the username cookie needs to be different than the one originally
     # requested.
-    socketio.emit('create_player_response', {'username':msg['username']}, room=request.sid)
+
+    response_message = {
+            'username':username,
+            'user_id':player.id
+            }
+    socketio.emit('create_player_response', response_message, room=request.sid)
 
     # notifies the manager console.
-    socketio.emit('player_created_notification', msg, room=room)
+    socketio.emit('player_created_notification', response_message, room=manager_room)
 
 
 @socketio.on('submit_answer_request')
 def submitAnswer(msg):
     print("submitting answer")
     username = msg['username']
+    user_id = msg['user_id']
     game_id = msg['game_id']
     question_id = msg['question_id']
     answer_letter = msg['answer_letter']
 
     current_question = Question.query.get(question_id)
     isCorrect = current_question.correct == answer_letter
-    player = Player.query.filter_by(username=username).first()
+    player = Player.query.get(user_id)
 
     if player is None: # should be impossible, but just in case.
         createPlayer(msg={
@@ -238,6 +238,8 @@ def submitAnswer(msg):
 
 @socketio.on('create_game_request')
 def create_game(msg):
+        
+        # [TODO] this is not necessary. Replace with db.session.refresh()
         all_games = Game.query.all()
         if len(all_games) == 0:
             max_id = 0
@@ -253,24 +255,18 @@ def create_game(msg):
                 )
 
         username = msg['username']
-        # set the creator as manager
-        creator = Player.query.filter_by(username=username).first()
-        if creator is None:
-            unique_username = username
-        else:
-            usernames = [p.username for p in Player.query.all()]
-            unique_username = uniquify(username,usernames)
+
         creator = Player(
-                username=unique_username
+                username=username,
+                manager=True,
+                game=new_game.id
                 )
-        creator.manager = True
-        creator.game = new_game.id
         db.session.add(creator)
         db.session.add(new_game)
         db.session.commit()
-        msg['username'] = unique_username
+        msg['username'] = username
         response_message = {
-                    'username':unique_username,
+                    'username':username,
                     'game_id':new_game_id
                 }
         socketio.emit('create_game_response', response_message, room=request.sid)
