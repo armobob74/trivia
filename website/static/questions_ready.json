@@ -1,5 +1,86 @@
 [
   {
+    "text": "Which of these is Venus visibly lacking in Botticelli's “Birth of Venus”?",
+    "A": "Belly Button",
+    "B": "Nipples",
+    "C": "Body hair",
+    "D": "Eyes",
+    "correct": "C",
+    "difficulty": 7
+  },
+  {
+    "text": "What event inspired Aerosmith’s “Dude (Looks Like a Lady)”?",
+    "A": "Steven Tyler looks like a lady.",
+    "B": "Steven Tyler drunkenly put on makeup and a dress, trying to fool heavy metal vocalist Vince Neil into dating him.",
+    "C": "Steven Tyler spotted a lady at a bar who turned out to be heavy metal vocalist Vince Neil.",
+    "D": "Steven Tyler used ChatGPT.",
+    "correct": "C",
+    "difficulty": 5
+  },
+  {
+    "text": "Which food is traditionally a main ingredient in mock turtle soup?",
+    "A": "Calf brains",
+    "B": "Beer",
+    "C": "Sheep Liver",
+    "D": "Deer Tongue",
+    "correct": "A",
+    "difficulty": 6
+  },
+  {
+    "text": "Famous director Francis Ford Coppola holds a US patent for a t-shirt that does what?",
+    "A": "Contains anti-microbial cellulose triacetate fibers extracted from recycled film reels.",
+    "B": "Displays a grid on the back, allowing the wearer to easily identify what part of their back itches",
+    "C": "Is dyed with red wine, causing any wine spills to be invisible.",
+    "D": "Attaches the sleeves with velcro, allowing them to be removed if desired.",
+    "correct": "B",
+    "difficulty": 7
+  },
+  {
+    "text": "Which tool is typically used to clear a clogged pipe?",
+    "A": "Wrench",
+    "B": "Snake",
+    "C": "Gopher",
+    "D": "Accelerometer",
+    "correct": "B",
+    "difficulty": 3
+  },
+  {
+    "text": "Which country is part of North America?",
+    "A": "Mali",
+    "B": "Canada",
+    "C": "Japan",
+    "D": "Ecuador",
+    "correct": "C",
+    "difficulty": 2
+  },
+  {
+    "text": "New Mexico exempts which group of people from paying state income taxes?",
+    "A": "Homeowners",
+    "B": "Centenarians",
+    "C": "Veterans",
+    "D": "Teachers",
+    "correct": "B",
+    "difficulty": 8
+  },
+  {
+    "text": "The college degree “B.A.” is short for what?",
+    "A": "Bachelor of Arts",
+    "B": "Bachelor of Academics",
+    "C": "Brightest of America",
+    "D": "Best Artist",
+    "correct": "A",
+    "difficulty": 1
+  },
+  {
+    "text": "In 1973, Arabella and Anita became the first members of what species to go into space?",
+    "A": "Spider",
+    "B": "Dog",
+    "C": "Human",
+    "D": "Pig",
+    "correct": "A",
+    "difficulty": 6
+  },
+  {
     "text": "What did Yankee Doodle stick in his cap?",
     "A": "Feather",
     "B": "Spaghetti",
