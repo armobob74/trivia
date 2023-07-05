@@ -15,3 +15,15 @@ body {
 
 body > div {
   background-color: white; }
+
+.green-btn {
+  cursor: pointer;
+  background-color: #70d279;
+  border-radius: 50px;
+  font-size: 100%;
+  border: none;
+  transition: all 0.2s;
+  padding: 0.5rem; }
+
+.green-btn:hover {
+  background-color: #35a740; }

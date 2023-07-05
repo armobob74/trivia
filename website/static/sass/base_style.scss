@@ -20,3 +20,18 @@ body{
 body>div{
 	background-color: $bg-color-2;
 }
+
+.green-btn{
+	cursor:pointer;
+	background-color:$trivia-light-green;
+	border-radius:50px;
+	font-size:100%;
+	//border: solid 3px lighten($bg-color-1,30%);
+	border:none;
+	transition: all 0.2s ;
+	padding: 0.5rem;
+}
+.green-btn:hover{
+	background-color:darken($trivia-light-green,20%);
+}
+

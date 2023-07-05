@@ -238,7 +238,7 @@ def submitAnswer(msg):
 
 @socketio.on('create_game_request')
 def create_game(msg):
-        
+
         # [TODO] this is not necessary. Replace with db.session.refresh()
         all_games = Game.query.all()
         if len(all_games) == 0:
