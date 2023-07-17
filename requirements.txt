@@ -5,3 +5,5 @@ libsass
 gunicorn
 gevent-websocket
 psutil
+pytest
+selenium
