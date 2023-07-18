@@ -1,5 +1,149 @@
 [
   {
+    "text": "Andrew Jackson was the first U.S.president to enjoy what at the White House?",
+    "A": "Electric Lighting",
+    "B": "Indoor Plumbing",
+    "C": "Handwoven Carpets",
+    "D": "Running Water",
+    "correct": "B",
+    "difficulty": 7
+  },
+  {
+    "text": "What zodiac sign features a creature that defends itself with an aculeus?",
+    "A": "Scorpio",
+    "B": "Virgo",
+    "C": "Taurus",
+    "D": "DiCaprio",
+    "correct": "C",
+    "difficulty": 6
+  },
+  {
+    "text": "U.S. air traffic controllers refer to the plane the Pope travels on by what official call sign?",
+    "A": "Shepherd One",
+    "B": "Vatican One",
+    "C": "Holy One",
+    "D": "Celestial Voyager",
+    "correct": "A",
+    "difficulty": 5
+  },
+  {
+    "text": "What popular corn chip loosely translates to “little golden things” in Spanish?",
+    "A": "Fritos",
+    "B": "Takis",
+    "C": "Doritos",
+    "D": "Tostitos",
+    "correct": "C",
+    "difficulty": 4
+  },
+  {
+    "text": "In 2017, what did Twitter do to its 140-character limit on tweets?",
+    "A": "Double it",
+    "B": "Triple it",
+    "C": "Enforce it",
+    "D": "Remove it",
+    "correct": "A",
+    "difficulty": 3
+  },
+  {
+    "text": "On a compass, what does the letter N typically stand for?",
+    "A": "N/A",
+    "B": "North",
+    "C": "Navigator",
+    "D": "Needle",
+    "correct": "B",
+    "difficulty": 2
+  },
+  {
+    "text": "A spork is a utensil that combines what two things?",
+    "A": "Knife + fork",
+    "B": "Spoon + knife",
+    "C": "Spoon + fork",
+    "D": "Salad fork + dinner fork",
+    "correct": "C",
+    "difficulty": 1
+  },
+  {
+    "text": "What costume was worn by the original lead singer of the Village People?",
+    "A": "Cowboy",
+    "B": "Policeman",
+    "C": "G.I.",
+    "D": "Builder",
+    "correct": "B",
+    "difficulty": 12
+  },
+  {
+    "text": "Which statement is NOT true about photosynthesis and chemosynthesis?",
+    "A": "Both powered by sunlight",
+    "B": "Both are processes that are used to sustain life",
+    "C": "Both involve production of organic compounds",
+    "D": "Both play important roles in nutrient cycling",
+    "correct": "A",
+    "difficulty": 11
+  },
+  {
+    "text": "In what medium was Superman’s Kryptonite weakness introduced?",
+    "A": "Radio",
+    "B": "Television",
+    "C": "Comic Books",
+    "D": "Film",
+    "correct": "A",
+    "difficulty": 10
+  },
+  {
+    "text": "Which has been the last name of a U.S. president AND a British prime minister?",
+    "A": "Grant",
+    "B": "Washington",
+    "C": "Wilson",
+    "D": "Churchill",
+    "correct": "C",
+    "difficulty": 8
+  },
+  {
+    "text": "A high-tech store with no cashiers recently opened in Seattle under what name?",
+    "A": "Amazon Go",
+    "B": "ScanSmart Supermart",
+    "C": "SelfServe Seattle",
+    "D": "Cashless Convenience",
+    "correct": "A",
+    "difficulty": 4
+  },
+  {
+    "text": "Which of these is an actual Winter Olympics event?",
+    "A": "Skeleton",
+    "B": "Frostfire",
+    "C": "Dodgeball",
+    "D": "Snowflop",
+    "correct": "A",
+    "difficulty": 3
+  },
+  {
+    "text": "What’s the anatomical name for the center of a hurricane?",
+    "A": "Head",
+    "B": "Tail",
+    "C": "Eye",
+    "D": "Heart",
+    "correct": "C",
+    "difficulty": 2
+  },
+  {
+    "text": "Tic-tac-toe is typically played by writing what two symbols?",
+    "A": "1 and 0",
+    "B": "! and ?",
+    "C": "X and O",
+    "D": "C and O",
+    "correct": "C",
+    "difficulty": 1
+  },
+  {
+    "text": "In the 1800s, a chemistry student making synthetic quinine accidentally created what color of dye?",
+    "A": "Mauve",
+    "B": "Fuchsia",
+    "C": "Forest Green",
+    "D": "Turquoise",
+    "correct": "A",
+    "difficulty": 11
+  },
+  {
     "text": "Which of these is Venus visibly lacking in Botticelli's “Birth of Venus”?",
     "A": "Belly Button",
     "B": "Nipples",
