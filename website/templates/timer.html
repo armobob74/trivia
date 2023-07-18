@@ -1,0 +1,40 @@
+		<div class="timer">
+			<div id="timerDisplay">00:00</div>
+		</div>
+
+		<script>
+			let interval;
+			let duration = 4;
+
+			startTimer()
+
+			function startTimer() {
+				const timerDisplay = document.getElementById('timerDisplay');
+
+				if (interval) {
+					clearInterval(interval);
+				}
+
+				updateDisplay(timerDisplay);
+
+				interval = setInterval(() => {
+					duration--;
+					if (duration <= 0) {
+						clearInterval(interval);
+						timerDisplay.textContent = 'Time is up!';
+						return;
+					}
+					updateDisplay(timerDisplay);
+				}, 1000);
+			}
+
+			function updateDisplay(timerDisplay) {
+				const minutes = Math.floor(duration / 60);
+				const seconds = duration % 60;
+
+				const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+				const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
+
+				timerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
+			}
+		</script>
