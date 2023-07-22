@@ -39,10 +39,16 @@
 			}
 
 		{% if is_manager %}
-			// when manager timer hits zero, notify all attached
+			// when manager timer hits zero, notify all attached players.
+			// the disableQuestion() function is defined in manage_game.html.
+			// it's defined there because it makes use of websocket.
+			function timerAction(){
+				timerDisplay.textContent = '00:00';
+				disableQuestion()
+			}
 		{% else %}
 			function timerAction(){
-						timerDisplay.textContent = 'Time is up!';
+						timerDisplay.textContent = '00:00';
 			}
 		{% endif %}
 		</script>

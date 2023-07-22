@@ -1,3 +1,4 @@
+{% from "timer.html" import timer %}
 {% extends "skeleton.html"%}
 {% block head %}
 <title>Manage Game {{game_id}}</title>
@@ -6,6 +7,7 @@
 {% block body %}
 <div class="g1">
 <h1>Game ID: {{game_id}}</h1>
+<h2>Timer: {{ timer(5,True) }}</h2>
 <h2>Answers submitted: <span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h2>
 </div>
 <div class="g2">
@@ -84,6 +86,12 @@
 	    for(answer_tf_item of answer_tfs){
 		answer_tf_item.innerHTML="..."
 	    }
+    }
+
+    function disableQuestion(room){
+	// used by the timer to disable the question once the timer expires
+	socket.emit('disable_question',{'room':room})	
+	console.log('Sent disable_question')
     }
 
     socket.on('update_manager_response', function(msg){
