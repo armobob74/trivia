@@ -2,6 +2,7 @@ from flask import Flask
 import sass
 from website.models import *
 from website.views import views
+from website.dev_views import dev_views
 from website.data_endpoints import data_endpoints
 import os
 from website.errorhandler import errorhandler
@@ -17,6 +18,7 @@ def create_app():
     #app.jinja_env.globals.update(some_global = some_global) #can be used for variables or functions
 
     app.register_blueprint(views, url_prefix='/')
+    app.register_blueprint(dev_views, url_prefix='/dev-views')
     app.register_blueprint(data_endpoints, url_prefix='/')
     app.register_blueprint(errorhandler, url_prefix='/')
     return app

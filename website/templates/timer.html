@@ -1,10 +1,10 @@
+{% macro timer(timer_duration, is_manager=False) %}
 		<div class="timer">
 			<div id="timerDisplay">00:00</div>
 		</div>
-
 		<script>
 			let interval;
-			let duration = 4;
+			let secs_remaining = {{timer_duration}};
 
 			startTimer()
 
@@ -18,10 +18,10 @@
 				updateDisplay(timerDisplay);
 
 				interval = setInterval(() => {
-					duration--;
-					if (duration <= 0) {
+					secs_remaining--;
+					if (secs_remaining <= 0) {
 						clearInterval(interval);
-						timerDisplay.textContent = 'Time is up!';
+						timerAction();
 						return;
 					}
 					updateDisplay(timerDisplay);
@@ -29,12 +29,21 @@
 			}
 
 			function updateDisplay(timerDisplay) {
-				const minutes = Math.floor(duration / 60);
-				const seconds = duration % 60;
+				const minutes = Math.floor(secs_remaining / 60);
+				const seconds = secs_remaining % 60;
 
 				const formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
 				const formattedSeconds = seconds < 10 ? '0' + seconds : seconds;
 
 				timerDisplay.textContent = `${formattedMinutes}:${formattedSeconds}`;
 			}
+
+		{% if is_manager %}
+			// when manager timer hits zero, notify all attached
+		{% else %}
+			function timerAction(){
+						timerDisplay.textContent = 'Time is up!';
+			}
+		{% endif %}
 		</script>
+{% endmacro %}
