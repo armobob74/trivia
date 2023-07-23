@@ -90,8 +90,12 @@
 	    socket.emit('main_time_request',game_id)
 	    console.log('Sent main_time_request')
     }
+
+    mainTimeRequest()
     socket.on('main_time_response', function(main_time){
 	    console.log('Recieved main_time_response',main_time)
+	    secs_remaining = main_time;
+	    startTimer()
     });
 
     function submitAnswer(){

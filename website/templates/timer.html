@@ -1,12 +1,11 @@
 {% macro timer(timer_duration, is_manager=False) %}
 		<div class="timer">
-			<div id="timerDisplay">00:00</div>
+			<div id="timerDisplay">--:--</div>
 		</div>
 		<script>
 			let interval;
 			let secs_remaining = {{timer_duration}};
 
-			startTimer()
 
 			function startTimer() {
 				const timerDisplay = document.getElementById('timerDisplay');
@@ -42,6 +41,9 @@
 			function timerAction(){
 				timerDisplay.textContent = '00:00';
 			}
+			// the manager timer starts on page load, but 
+			// the player timer starts after it gets synced with the manager timer
+			startTimer()
 		{% else %}
 			function timerAction(){
 						timerDisplay.textContent = '00:00';
