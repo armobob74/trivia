@@ -64,6 +64,7 @@ def manageGame(game_id):
         'answer_text':question.__dict__[question.correct],
         'num_questions':len(game.questions),
         'num_completed_questions':len(game.completed_questions),
+        'timer_duration':30,
     }
     return render_template('manage_game.html', game_id=game_id,**d)
 

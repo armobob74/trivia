@@ -3,11 +3,28 @@
 {% block head %}
 <title>Manage Game {{game_id}}</title>
 <link rel="stylesheet" href="/static/css/manage_game.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
+<script>
+	var game_id = {{game_id}}
+	var socket = io.connect('/'); //needs to come before cookieFunctions
+</script>
+<script src="/static/javascript/cookieFunctions.js"></script>
+<script>
+    function checkTimerCookie(){
+	let timer_cookie = getCookie("timer")
+	if(timer_cookie != ""){
+		secs_remaining = timer_cookie;
+	}
+    }
+    function setTimerCookie(num_secs){
+		setCookie("timer",num_secs)
+    }
+</script>
 {% endblock %}
 {% block body %}
 <div class="g1">
 <h1>Game ID: {{game_id}}</h1>
-<h2>Timer: {{ timer(5,True) }}</h2>
+<h2>Timer: {{ timer(timer_duration,True) }}</h2>
 <h2>Answers submitted: <span id="answers_submitted">{{answers_submitted}}</span>/<span id="num_players">{{num_players}}</span></h2>
 </div>
 <div class="g2">
@@ -37,12 +54,6 @@
 </tbody>
 </table>
 </div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.js"></script>
-<script>
-	var game_id = {{game_id}}
-	var socket = io.connect('/'); //needs to come before cookieFunctions
-</script>
-<script src="/static/javascript/cookieFunctions.js"></script>
 <script src="/static/javascript/userCookie.js"></script>
 <script>
 
@@ -81,6 +92,11 @@
 	console.log('Sent refresh_order')
 	n_ans_submitted = 0    
 	answers_submitted.innerText = 0
+
+	// reset the timer
+	setCookie("timer",{{timer_duration}})
+	secs_remaining = {{timer_duration}}
+	startTimer()
 	
 	answer_tfs = document.getElementsByClassName('answer-tf')
 	    for(answer_tf_item of answer_tfs){

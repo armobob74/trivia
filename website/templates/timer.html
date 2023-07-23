@@ -4,7 +4,11 @@
 		</div>
 		<script>
 			let interval;
+
 			let secs_remaining = {{timer_duration}};
+			{% if is_manager %}
+			checkTimerCookie() // will update secs_remaining immediately if cookie exists.
+			{% endif %}
 
 
 			function startTimer() {
@@ -17,9 +21,15 @@
 				updateDisplay(timerDisplay);
 
 				interval = setInterval(() => {
+					{% if is_manager %}
+					// this function is defined in manage_game.html
+					// not defined here because it requires cookie functions
+					setCookie("timer",secs_remaining-1)
+					{% endif %}
 					secs_remaining--;
 					if (secs_remaining <= 0) {
 						clearInterval(interval);
+						secs_remaining = 0;
 						timerAction();
 						return;
 					}
