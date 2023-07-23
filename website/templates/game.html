@@ -1,3 +1,4 @@
+{% from "timer.html" import timer %}
 {% extends "skeleton.html"%}
 {% block head %}
 <title>Game {{game_id}}</title>
@@ -6,6 +7,7 @@
 {% block body %}
 
 <div id="question-text"><h3>{{ question['text'] }}</h3></div>
+<h4 style="text-align:center;margin-bottom:1rem;">{{timer(5, False)}}</h4>
 
 <form onsubmit="console.log('submitted')" id="question-form">
 
@@ -82,6 +84,16 @@
 	    console.log('Sent update_manager_request',update_msg)
     }
 
+    function mainTimeRequest(){
+	    // used by the timer to sync with manager on page load
+	    // server returns main_time_response, which should contain the clock val in seconds.
+	    socket.emit('main_time_request',game_id)
+	    console.log('Sent main_time_request')
+    }
+    socket.on('main_time_response', function(main_time){
+	    console.log('Recieved main_time_response',main_time)
+    });
+
     function submitAnswer(){
 	update_msg['user_id'] = user_id // done here to avoid race condition
 	update_msg['username'] = username 
@@ -92,7 +104,7 @@
     }
 
     // [TODO] modernize
-    function disableForm(){
+    function disableForm(timeout=false){
 		for(inpt of question_form.getElementsByTagName('input')){
 			inpt.disabled=true;
 		}
@@ -100,7 +112,12 @@
 		dv.classList.add('disabled');
 		dv.onclick = "";
 	    }
+	    if(timeout){
+		btn.outerHTML = '<p>time\'s up!</p>'
+	    }else{
 		btn.outerHTML = '<p>submitted</p>'
+
+	    }
     }
 
     // check on refresh to see if form should be enabled or disabled

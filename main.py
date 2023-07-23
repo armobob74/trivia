@@ -17,6 +17,23 @@ socketio = SocketIO(app)
 create_all()
 
 
+@socketio.on('main_time_request')
+def main_time_request(game_id):
+    msg = {
+            'requester_sid':request.sid,
+           }
+    room = f'managing {game_id}'
+    # this is NOT a typo. We are forwarding the request to the manager, which will return the response.
+    # we then forward that response to the client
+    socketio.emit('main_time_request', msg, room=room)
+
+@socketio.on('main_time_response')
+def main_time_response(data):
+    room = data['client_id']
+    # forward main_time_response from manager to client
+    # purpose is to sync client clock with manager clock
+    socketio.emit('main_time_response', data['main_time'], room=room)
+
 @socketio.on('question_card_request')
 def question_card(question_id):
     """

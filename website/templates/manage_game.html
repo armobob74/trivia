@@ -88,11 +88,14 @@
 	    }
     }
 
-    function disableQuestion(room){
-	// used by the timer to disable the question once the timer expires
-	socket.emit('disable_question',{'room':room})	
-	console.log('Sent disable_question')
-    }
+    socket.on('main_time_request', function(msg){
+	    resp = {
+		    'client_id':msg['requester_sid'],
+		    'main_time':secs_remaining
+	    }
+	    socket.emit('main_time_response',resp)	
+	    console.log('Sent main_time_response', resp)
+    });
 
     socket.on('update_manager_response', function(msg){
 	    n_ans_submitted = n_ans_submitted + 1
